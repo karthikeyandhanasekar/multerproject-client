@@ -36,18 +36,23 @@ const Home = () => {
 
     return (
         <main className="home">
-            <h1>Multer Project </h1>
+            <div>
+                <h1>File Upload Using Multer-Gridfs-Storage</h1>
+                <h4> Warning : Don't Upload Sensitive Data. Only Pratice Purpose</h4>
+                <form onSubmit={handleSubmit(onsubmit)} encType="multipart/form-data"  >
+
+                    <input {...register("files")} type="file" required />
+
+                    <br /> <br />
+                    <button type="submit" >Upload</button>
+
+                </form>
+            </div>
+            <div></div>
             <br /><br />
-            <form onSubmit={handleSubmit(onsubmit)} encType="multipart/form-data"  >
 
-                <input {...register("files")} type="file" required />
-
-                <br /> <br />
-                <button type="submit" >Upload</button>
-
-            </form>
             <br /> <br />
-
+            {/* 
             <form onSubmit={handleSubmit(ondonwloadsubmit)} encType="multipart/form-data"  >
 
                 <input {...register("filename")} type="text" multiple />
@@ -55,7 +60,7 @@ const Home = () => {
                 <br /> <br />
                 <button type="submit" >Download</button>
 
-            </form>
+            </form> */}
 
         </main>
 

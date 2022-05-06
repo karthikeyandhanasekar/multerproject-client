@@ -21,3 +21,11 @@ export const downloadfile = async ({ filename }) => {
         console.error(error.message);
     }
 }
+
+export const retriveallfiles = async () => {
+    try {
+        return await axios.get(`${baseurl}/`)
+    } catch (error) {
+        console.error(error.message);
+    }
+}
