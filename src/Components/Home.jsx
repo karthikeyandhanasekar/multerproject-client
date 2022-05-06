@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { uploadfile } from "../apiCalls";
+import { downloadfile, uploadfile } from "../apiCalls";
 
 
 
@@ -16,8 +16,17 @@ const Home = () => {
 
             formdata.append("file", data.files[0])
 
-            const result = await uploadfile({ filedata: formdata })
+            await uploadfile({ filedata: formdata })
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    //filename properties value assign to var value
+    const ondonwloadsubmit = async ({ filename: value }) => {
+        try {
+            const result = await downloadfile({ filename: value })
             console.log(result);
+            // const blob = new Blob([result.data],{type:})
         } catch (error) {
             console.error(error.message);
         }
@@ -29,10 +38,20 @@ const Home = () => {
             <br /><br />
             <form onSubmit={handleSubmit(onsubmit)} encType="multipart/form-data"  >
 
-                <input {...register("files")} type="file" multiple />
+                <input {...register("files")} type="file" required />
 
                 <br /> <br />
                 <button type="submit" >Upload</button>
+
+            </form>
+            <br /> <br />
+
+            <form onSubmit={handleSubmit(ondonwloadsubmit)} encType="multipart/form-data"  >
+
+                <input {...register("filename")} type="text" multiple />
+
+                <br /> <br />
+                <button type="submit" >Download</button>
 
             </form>
 
