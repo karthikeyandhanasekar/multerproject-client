@@ -25,8 +25,10 @@ const Home = () => {
     const ondonwloadsubmit = async ({ filename: value }) => {
         try {
             const result = await downloadfile({ filename: value })
-            console.log(result);
-            // const blob = new Blob([result.data],{type:})
+            console.log(result.data.message.filename);
+            console.log(result.config.url);
+
+
         } catch (error) {
             console.error(error.message);
         }
