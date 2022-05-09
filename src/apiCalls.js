@@ -16,16 +16,19 @@ export const uploadfile = async ({ filedata }) => {
 
 export const downloadfile = async ({ filename }) => {
     try {
-        return await axios.get(`${baseurl}/download/${filename}`)
+        console.log("FIlename + ", filename);
+        return await axios.get(`${baseurl}/download/${filename}`,)
     } catch (error) {
         console.error(error.message);
     }
 }
 
-export const retriveallfiles = async () => {
+export const retrivefilename = async () => {
     try {
-        return await axios.get(`${baseurl}/`)
+        return await axios.get(`${baseurl}/`).then(res => res.data)
     } catch (error) {
         console.error(error.message);
     }
 }
+
+

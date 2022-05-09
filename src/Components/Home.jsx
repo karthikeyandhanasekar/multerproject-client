@@ -1,17 +1,42 @@
 import { useForm } from "react-hook-form";
-import { downloadfile, uploadfile } from "../apiCalls";
+import { downloadfile, retrivefilename, uploadfile } from "../apiCalls";
+import React, { useEffect, useState } from 'react';
 
 
 
 const Home = () => {
-
     const { register, handleSubmit } = useForm();
+    const [filename, getfilename] = useState([])
 
 
+    const retrivefilecontent = async () => {
+
+        const names = await retrivefilename()
+        let filelist = []
+        names.map((filename) => {
+            downloadfile({ filename: filename }).then(result => {
+                const [contenttype, charaset] = result.headers['content-type'].split(";")
+                const filedata = {
+                    filename: result.data.filename,
+                    contenttype: contenttype,
+                    charaset: charaset,
+                    downloadurl: result.config.url
+                }
+                filelist.push(filedata);
+                getfilename(data => [...data, filedata])
+            })
+
+
+        })
+
+
+    }
+    useEffect(() => {
+        retrivefilecontent()
+    }, []);
 
     const onsubmit = async (data) => {
         try {
-            console.log(data.files);
             const formdata = new FormData()
 
             formdata.append("file", data.files[0])
@@ -21,19 +46,6 @@ const Home = () => {
             console.error(error.message);
         }
     }
-    //filename properties value assign to var value
-    const ondonwloadsubmit = async ({ filename: value }) => {
-        try {
-            const result = await downloadfile({ filename: value })
-            console.log(result.data.message.filename);
-            console.log(result.config.url);
-
-
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
     return (
         <main className="home">
             <div>
@@ -48,7 +60,13 @@ const Home = () => {
 
                 </form>
             </div>
-            <div></div>
+            <div>
+                {
+                    // filename[0] && React.Children.toArray(filename.map(ele => <span className="file">{ele}</span>))
+
+                }
+
+            </div>
             <br /><br />
 
             <br /> <br />
