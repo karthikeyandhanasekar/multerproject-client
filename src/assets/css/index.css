@@ -16,10 +16,14 @@
 .home {
     border: solid;
     text-align: center;
+
+}
+
+.home, .filelist {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    place-items: center;
+
 }
 
 .home div {
@@ -35,17 +39,31 @@ form {
     padding: 2%;
     margin-left: 20%;
 }
-.home div h4
-{
+
+.home div h4 {
     color: rgb(90, 1, 1);
     font-size: 2em;
 }
-form button
-{
+
+form button {
     font-size: 1.2em;
     padding: 2%;
     border: none;
     cursor: pointer;
     background-color: #008000;
     color: #ffffff;
+}
+
+.filelist {
+    flex-direction: column;
+    overflow-y: scroll;
+
+}
+
+.filelist a {
+    text-decoration: none;
+    margin-top: 10%;
+    color: white;
+    cursor: pointer;
+    border: solid;
 }

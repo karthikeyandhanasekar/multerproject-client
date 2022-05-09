@@ -1,18 +1,18 @@
 import { useForm } from "react-hook-form";
-import { downloadfile, retrivefilename, uploadfile } from "../apiCalls";
+import { downloadfile, multiplefile, retrivefilename, uploadfile } from "../apiCalls";
 import React, { useEffect, useState } from 'react';
 
 
 
 const Home = () => {
     const { register, handleSubmit } = useForm();
-    const [filename, getfilename] = useState([])
+    const [files, getfiles] = useState([])
 
 
     const retrivefilecontent = async () => {
 
         const names = await retrivefilename()
-        let filelist = []
+        getfiles([])
         names.map((filename) => {
             downloadfile({ filename: filename }).then(result => {
                 const [contenttype, charaset] = result.headers['content-type'].split(";")
@@ -22,8 +22,7 @@ const Home = () => {
                     charaset: charaset,
                     downloadurl: result.config.url
                 }
-                filelist.push(filedata);
-                getfilename(data => [...data, filedata])
+                getfiles(data => [...data, filedata])
             })
 
 
@@ -35,13 +34,26 @@ const Home = () => {
         retrivefilecontent()
     }, []);
 
+    const singleupload = async (data) => {
+        const formdata = new FormData()
+        console.log("singlefile");
+        formdata.append("file", data[0])
+        await uploadfile({ filedata: formdata })
+    }
+
+    const multipleupload = async (data) => {
+        const formdata = new FormData()
+        for (const value of data) {
+            formdata.append("file", value)
+        }
+        await multiplefile({ filedata: formdata })
+    }
+
+
     const onsubmit = async (data) => {
         try {
-            const formdata = new FormData()
-
-            formdata.append("file", data.files[0])
-
-            await uploadfile({ filedata: formdata })
+            console.log("onclick");
+            data.files.length === 1 ? singleupload(data.files) : multipleupload(data.files)
         } catch (error) {
             console.error(error.message);
         }
@@ -53,16 +65,25 @@ const Home = () => {
                 <h4> Warning : Don't Upload Sensitive Data. Only Pratice Purpose</h4>
                 <form onSubmit={handleSubmit(onsubmit)} encType="multipart/form-data"  >
 
-                    <input {...register("files")} type="file" required />
+                    <input {...register("files")} type="file" required multiple />
 
                     <br /> <br />
                     <button type="submit" >Upload</button>
 
                 </form>
             </div>
-            <div>
+            <div className="filelist">
                 {
-                    // filename[0] && React.Children.toArray(filename.map(ele => <span className="file">{ele}</span>))
+                    files[0] && React.Children.toArray(files.map(ele => {
+                        if (ele.contenttype.startsWith("image/")) {
+                            return (
+                                <img src={ele.downloadurl} alt={ele.filename} />
+                            )
+                        }
+                        else {
+                            return (<a href={ele.downloadurl} className="file">{ele.filename}</a>)
+                        }
+                    }))
 
                 }
 

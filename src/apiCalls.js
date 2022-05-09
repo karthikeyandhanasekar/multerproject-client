@@ -12,6 +12,15 @@ export const uploadfile = async ({ filedata }) => {
         console.error(error.message);
     }
 }
+export const multiplefile = async ({ filedata }) => {
+    try {
+        return await axios.post(`${baseurl}/multipleupload`, filedata, {
+            responseType: "blob",
+        })
+    } catch (error) {
+        console.error(error.message);
+    }
+}
 
 
 export const downloadfile = async ({ filename }) => {
