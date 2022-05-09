@@ -3,17 +3,16 @@ import { downloadfile, multiplefile, retrivefilename, uploadfile } from "../apiC
 import React, { useEffect, useState } from 'react';
 
 
-// const { downloadfile, multiplefile, retrivefilename, uploadfile } =React.lazy(()=>import("../apiCalls"))
 const Home = () => {
     const { register, handleSubmit } = useForm();
     const [files, getfiles] = useState([])
 
-
     const retrivefilecontent = async () => {
 
+        // get the list of file name from db
         const names = await retrivefilename()
-        console.log(names);
 
+        // iterate the filename and get content & details
         for (const filename of names) {
             downloadfile({ filename: filename }).then(result => {
                 const [contenttype, charaset] = result.headers['content-type'].split(";")
@@ -25,20 +24,18 @@ const Home = () => {
                 }
                 getfiles(data => [...data, filedata])
             })
-            const currentstate = files
-            currentstate.push(files)
-            getfiles(currentstate)
-
         }
     }
+
+
     useEffect(() => {
         retrivefilecontent()
+
     }, []);
 
     //upload single file
     const singleupload = async (data) => {
         const formdata = new FormData()
-        console.log("singlefile");
         formdata.append("file", data[0])
         const result = await uploadfile({ filedata: formdata })
         console.log(result);
@@ -59,7 +56,6 @@ const Home = () => {
 
     const onsubmit = async (data) => {
         try {
-            console.log("onclick");
             data.files.length === 1 ? singleupload(data.files) : multipleupload(data.files)
         } catch (error) {
             console.error(error.message);
@@ -75,7 +71,6 @@ const Home = () => {
                         <input {...register("files")} type="file" required multiple />
                         Add Files
                     </label>
-
                     <br /> <br />
                     <button type="submit" >Upload</button>
 

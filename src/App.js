@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import './assets/css/index.css'
 import React, { Suspense } from 'react';
-
+import Loader from './assets/images/loader.gif'
 const MainComponents = React.lazy(() => import('./Components/MainComponents'))
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <header className="App-header">
-          <Suspense fallback={<div>Loading</div>}>
+          <Suspense fallback={<img src={Loader} alt="loader" />}>
             <MainComponents />
           </Suspense>
         </header>

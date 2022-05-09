@@ -1,8 +1,10 @@
 
 import axios from 'axios'
 
+
 const baseurl = 'http://localhost:5000'
 
+// api to upload single file
 export const uploadfile = async ({ filedata }) => {
     try {
         return await axios.post(`${baseurl}/upload`, filedata, {
@@ -12,6 +14,8 @@ export const uploadfile = async ({ filedata }) => {
         console.error(error.message);
     }
 }
+
+//api to upload multiple file
 export const multiplefile = async ({ filedata }) => {
     try {
         return await axios.post(`${baseurl}/multipleupload`, filedata, {
@@ -23,6 +27,7 @@ export const multiplefile = async ({ filedata }) => {
 }
 
 
+// api for specific file retrival
 export const downloadfile = async ({ filename }) => {
     try {
         return await axios.get(`${baseurl}/download/${filename}`,)
@@ -31,6 +36,7 @@ export const downloadfile = async ({ filename }) => {
     }
 }
 
+//api for retrive list of file names
 export const retrivefilename = async () => {
     try {
         return await axios.get(`${baseurl}/`).then(res => res.data)
