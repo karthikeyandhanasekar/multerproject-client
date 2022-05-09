@@ -25,7 +25,6 @@ export const multiplefile = async ({ filedata }) => {
 
 export const downloadfile = async ({ filename }) => {
     try {
-        console.log("FIlename + ", filename);
         return await axios.get(`${baseurl}/download/${filename}`,)
     } catch (error) {
         console.error(error.message);

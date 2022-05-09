@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { downloadfile, multiplefile, retrivefilename, uploadfile } from "../apiCalls";
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 
 
@@ -12,21 +12,21 @@ const Home = () => {
     const retrivefilecontent = async () => {
 
         const names = await retrivefilename()
-        getfiles([])
-        names.map((filename) => {
+        console.log(names);
+        for (const filename of names) {
             downloadfile({ filename: filename }).then(result => {
                 const [contenttype, charaset] = result.headers['content-type'].split(";")
                 const filedata = {
-                    filename: result.data.filename,
+                    filename: result.config.url.split("/").pop(),
                     contenttype: contenttype,
                     charaset: charaset,
-                    downloadurl: result.config.url
+                    downloadurl: result.config.url,
                 }
                 getfiles(data => [...data, filedata])
             })
 
+        }
 
-        })
 
 
     }
@@ -38,7 +38,9 @@ const Home = () => {
         const formdata = new FormData()
         console.log("singlefile");
         formdata.append("file", data[0])
-        await uploadfile({ filedata: formdata })
+        const result = await uploadfile({ filedata: formdata })
+        console.log(result);
+        result && window.location.reload()
     }
 
     const multipleupload = async (data) => {
@@ -46,7 +48,9 @@ const Home = () => {
         for (const value of data) {
             formdata.append("file", value)
         }
-        await multiplefile({ filedata: formdata })
+        const result = await multiplefile({ filedata: formdata })
+        result && window.location.reload()
+
     }
 
 
@@ -107,4 +111,4 @@ const Home = () => {
 }
 
 
-export default Home
+export default (Home)
