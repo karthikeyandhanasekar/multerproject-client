@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { downloadfile, multiplefile, retrivefilename, uploadfile } from "../apiCalls";
+import { deletefile, downloadfile, multiplefile, renamefile, retrivefilename, uploadfile } from "../apiCalls";
 import React, { useEffect, useState } from 'react';
 
 
@@ -15,6 +15,7 @@ const Home = () => {
         // iterate the filename and get content & details
         for (const filename of names) {
             downloadfile({ filename: filename }).then(result => {
+                console.log(result);
                 const [contenttype, charaset] = result.headers['content-type'].split(";")
                 const filedata = {
                     filename: result.config.url.split("/").pop(),
@@ -53,6 +54,30 @@ const Home = () => {
 
     }
 
+    //delete file
+    const removefile = async (filename) => {
+        try {
+            console.log(filename);
+            const result = await deletefile({ filename: filename })
+            result.status && window.location.reload()
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    const rename = async (filename) => {
+        try {
+            const result = await renamefile({
+                oldname: filename,
+                newname: prompt("New FileName")
+
+            })
+            result.status && window.location.reload()
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
     const onsubmit = async (data) => {
         try {
@@ -88,7 +113,14 @@ const Home = () => {
                     }
                     else {
                         return (
-                            <a className="file" href={ele.downloadurl} download>{ele.filename}</a>
+                            <div>
+                                <a className="file" href={ele.downloadurl} download>{ele.filename}</a>
+                                <br /> <br />
+                                <button onClick={() => removefile(ele.filename)} >Delete</button>
+                                <br /> <br />
+                                <button onClick={() => rename(ele.filename)} >Rename</button>
+
+                            </div>
                         )
                     }
                 }))

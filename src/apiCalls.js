@@ -45,4 +45,22 @@ export const retrivefilename = async () => {
     }
 }
 
+//api for delete specific file
+export const deletefile = async ({ filename }) => {
+    try {
+        return await axios.delete(`${baseurl}/delete/${filename}`).then(res => res.data)
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+//api for rename specific file
+export const renamefile = async ({ oldname, newname }) => {
+    try {
+        return await axios.put(`${baseurl}/rename/${oldname}/${newname}`).then(res => res.data)
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
 
