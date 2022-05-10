@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { deletefile, downloadfile, multiplefile, renamefile, retrivefilename, uploadfile } from "../apiCalls";
 import React, { useEffect, useState } from 'react';
+import FileComponent from "./FileComponents";
 
 
 const Home = () => {
@@ -101,32 +102,14 @@ const Home = () => {
 
                 </form>
             </div>
-            {
+            <div className="files">
+                {
 
-                files[0] && React.Children.toArray(files.map(ele => {
-                    if (ele.contenttype?.startsWith("image/")) {
-                        return (
-                            <div className="image">
-                                <img src={ele.downloadurl} alt={ele.filename} loading="lazy" />
-                            </div>
-                        )
-                    }
-                    else {
-                        return (
-                            <div>
-                                <a className="file" href={ele.downloadurl} download>{ele.filename}</a>
-                                <br /> <br />
-                                <button onClick={() => removefile(ele.filename)} >Delete</button>
-                                <br /> <br />
-                                <button onClick={() => rename(ele.filename)} >Rename</button>
-
-                            </div>
-                        )
-                    }
-                }))
-
-
-            }
+                    files[0] && React.Children.toArray(files.map(ele =>
+                        <FileComponent donwloadurl={ele.downloadurl} filename={ele.filename} />
+                    ))
+                }
+            </div>
         </main>
 
     )
