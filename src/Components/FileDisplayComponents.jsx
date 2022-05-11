@@ -7,9 +7,9 @@ import FileComponent from "./FileComponents";
 const FileComponents = () => {
     const [files, getfiles] = useState([])
 
+    //functions works when it open first time
     useEffect(() => {
         retrivefilecontent()
-
     }, []);
 
 
@@ -36,6 +36,8 @@ const FileComponents = () => {
     const uniquefiles = [
         ...new Map(files?.map((file) => [file["filename"], file])).values(),
     ];
+    // console.log("Rendering");
+    // console.log(files);
     return (
         <div className="files">
             {

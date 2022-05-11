@@ -56,8 +56,9 @@ button[type=submit] {
 
 .files {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 50%));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 20%));
     overflow-y: auto;
+    border: solid;
 }
 
 .file {
